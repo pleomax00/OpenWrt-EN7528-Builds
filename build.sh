@@ -14,10 +14,15 @@ cp "$WS/files/en7528_dasan_h680gm-a.dts" target/linux/econet/dts/en7528_dasan_h6
 cat >> target/linux/econet/image/en7528.mk <<'MK'
 
 define Device/dasan_h680gm-a-airtel
-  $(Device/dasan_h660gm-a)
+  $(call Device/tclinux-ubi)
+  DEVICE_VENDOR := DASAN
   DEVICE_MODEL := H680GM-A
   DEVICE_VARIANT := Airtel
+  FACTORY_SIZE := 32m
+  TRX_LOADADDR := 0x80002000
+  KERNEL := kernel-bin | append-dtb | tclinux-free-bootbase-jump | lzma | kernel-trx
   DEVICE_DTS := en7528_dasan_h680gm-a
+  DEVICE_PACKAGES := kmod-usb2 kmod-mt7603 kmod-mt7615e kmod-mt7663-firmware-ap
 endef
 TARGET_DEVICES += dasan_h680gm-a-airtel
 MK
