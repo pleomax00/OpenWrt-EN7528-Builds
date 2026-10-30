@@ -11,6 +11,14 @@ git --no-pager log -1 --oneline
 # --- Add DASAN H680GM-A (Airtel) 128MB port ---
 cp "$WS/files/en7528_dasan_h680gm-a.dts" target/linux/econet/dts/en7528_dasan_h680gm-a.dts
 
+# Add H680GM-A (Airtel) to the A/B boot-flag tool so OpenWrt commits its boot slot.
+# H680 uses the same dzs@0x49 scheme as H660 (0000 = OS A/OpenWrt, 0101 = OS B/factory).
+CHBOOT=target/linux/econet/base-files/sbin/en75_chboot
+if ! grep -q "dasan,h680gm-a-airtel" "$CHBOOT"; then
+  sed -i '/dasan,h660gm-a-airtel|\\/i\    dasan,h680gm-a-airtel|\\' "$CHBOOT"
+fi
+grep -n "h680gm-a" "$CHBOOT" || true
+
 cat >> target/linux/econet/image/en7528.mk <<'MK'
 
 define Device/dasan_h680gm-a-airtel
