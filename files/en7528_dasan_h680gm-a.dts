@@ -15,7 +15,7 @@
  * rwfs@40c0000(32M), reservearea@60c0000(0x240000).
  * UBI rootfs = rootA(tclinux_rootfs, 28M) only; no 256MB root1.
  */
-&virtual_flash {
+&{/virtual_flash} {
 	devices = <&rootA>;
 };
 
